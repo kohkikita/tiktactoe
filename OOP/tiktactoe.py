@@ -10,7 +10,10 @@ class Game:
             ...
         
         def play(self) -> None:
-            ...
+            while True:
+                self.current_player.get_move()
+                self.current_player = player2 if self.current_player == player1 else player1
+                
 
 # Holds and displays current state
 class Board:    
@@ -93,6 +96,11 @@ class Player:
             try:
                 row = int(input("Enter row #(1-3): ")) - 1
                 col = int(input("Enter column #(1-3): ")) - 1
+                
+                if row not in [0, 1, 2] or col not in [0, 1, 2]:
+                    print("Please enter number between 1-3.")
+                    continue
+                
                 if board.is_valid_move(row, col):
                     board.place_marker(row, col, self.marker)
                     break
@@ -104,12 +112,15 @@ class Player:
             
     
 def main():
-    p1 = Player()
-    p1.player_setup()
-    p1.player_info()
-    p2 = Player()
-    p2.player_setup()
-    p2.player_info()
+    board = Board()
+    player1 = Player()
+    player2 = Player()
+    
+    player1.player_setup()
+    player2.player_setup()
+    
+    game = Game(board, player1, player2, player1)
+    game.play()
    
     
 if __name__ == "__main__":
