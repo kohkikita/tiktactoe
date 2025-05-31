@@ -11,13 +11,14 @@ class Game:
         
     def play(self) -> None:
         while True:
-            self.current_player.get_move()
+            self.board.display()
+            self.current_player.get_move(self.board)
             if self.board.is_full():
                 print("Tie game!")
                 break
             
             elif self.board.check_winner():
-                print(f"{self.current_player} wins!")
+                print(f"{self.current_player.name} wins!")
                 
                 # Add reset function here
                 
@@ -65,18 +66,20 @@ class Board:
                 return True
             
         # Checking for diagnal wins
-        if self.board[0][0] != " ":
-            if len(set(self.board[i][i] for i in range(3))):
-                return True
+        diag = [self.board[i][i] for i in range(3)]
+        if len(set(diag)) == 1 and diag[0] != " ":
+            return True
+
             
-        if self.board[-1][0] != " ":
-            if len(set(self.board[2 - i][i] for i in range(3))):
-                return True
+        diag = [self.board[2- i][i] for i in range(3)]
+        if len(set(diag)) == 1 and diag[0] != " ":
+            return True
+
         
         return False
     
     def is_full(self) -> bool:
-        return all(cell != "" for row in self.board for cell in row)
+        return all(cell != " " for row in self.board for cell in row)
     
 # Base class for player
 class Player:
