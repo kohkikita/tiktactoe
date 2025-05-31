@@ -6,6 +6,7 @@ class Player:
         self.name = name
         pass
     
+    # Setup for player: name & marker
     def player_setup(self) -> None:
         self.name = input("What is your name: ")
         
