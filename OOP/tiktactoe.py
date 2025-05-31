@@ -6,13 +6,24 @@ class Game:
         self.player2 = player2
         self.current_player = current_player
         
-        def switch_player(self) -> None:
-            ...
+    def switch_player(self) -> None:
+        self.current_player = self.player2 if self.current_player == self.player1 else self.player1
         
-        def play(self) -> None:
-            while True:
-                self.current_player.get_move()
-                self.current_player = player2 if self.current_player == player1 else player1
+    def play(self) -> None:
+        while True:
+            self.current_player.get_move()
+            if self.board.is_full():
+                print("Tie game!")
+                break
+            
+            elif self.board.check_winner():
+                print(f"{self.current_player} wins!")
+                
+                # Add reset function here
+                
+                break
+            self.switch_player()
+                
                 
 
 # Holds and displays current state
@@ -41,23 +52,28 @@ class Board:
         return True
 
     # determine the winnner by checking player game attribute
-    def check_winner(self) -> str:
+    def check_winner(self) -> bool:
         # Checking for row wins
         for row in self.board:
             if len(set(row)) == 1 and row[0] != " ":
-                return row[0]
+                return True
             
         # Checking for column wins
         for col in range(3):
             col_vals = [row[col] for row in self.board]
             if len(set(col_vals)) == 1 and col_vals[0] != " ":
-                return col_vals[0]
+                return True
             
         # Checking for diagnal wins
-        for row in self.board:
-            if len(set(col for row in self.board)):
-                ...
-        return ""
+        if self.board[0][0] != " ":
+            if len(set(self.board[i][i] for i in range(3))):
+                return True
+            
+        if self.board[-1][0] != " ":
+            if len(set(self.board[2 - i][i] for i in range(3))):
+                return True
+        
+        return False
     
     def is_full(self) -> bool:
         return all(cell != "" for row in self.board for cell in row)
