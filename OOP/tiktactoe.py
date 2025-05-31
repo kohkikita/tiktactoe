@@ -36,6 +36,9 @@ class Board:
         # self.board = [["1", "1", "1"],
         #               ["1", "1", "1"],
         #               ["1", "1", "1"]]
+        
+    def reset_board(self) -> None:
+        self.board = [[" " for _ in range(3)] for _ in range(3)]
             
     def display(self) -> None:
         for i in range(3):
@@ -131,6 +134,7 @@ class Player:
             
     
 def main():
+    
     board = Board()
     player1 = Player()
     player2 = Player()
@@ -139,7 +143,16 @@ def main():
     player2.player_setup()
     
     game = Game(board, player1, player2, player1)
-    game.play()
+    
+    while True:
+        game.play()
+        
+        again = input("Play again? (y/n): ").lower()
+        if again != "y":
+            break
+        board.reset_board()
+        
+        
    
     
 if __name__ == "__main__":
